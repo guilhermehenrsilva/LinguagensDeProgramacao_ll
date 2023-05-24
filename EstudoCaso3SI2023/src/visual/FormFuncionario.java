@@ -10,29 +10,34 @@ import  java.util.ArrayList;
 import javax.swing.JOptionPane;
 import modelo.Cidade;
 import modelo.DAOCidade;
+import modelo.Funcionario;
+import modelo.DAOFuncionario;
 
 /**
  *
  * @author tulio
  */
-public class FormCidade extends javax.swing.JDialog {
+public class FormFuncionario extends javax.swing.JDialog {
+    DAOFuncionario objDAOFuncionario = new DAOFuncionario();
     DAOCidade objDAOCidade = new DAOCidade();
 
     /** Creates new form FormCidade */
-    public FormCidade(java.awt.Frame parent, boolean modal) {
+    public FormFuncionario(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         atualizaTabela();
         trataEdicao(false);
+        listCidade.clear();
+        listCidade.addAll(objDAOCidade.getLista());
     }
     
     public void atualizaTabela(){
-        listCidade.clear();
-        listCidade.addAll(objDAOCidade.getLista());
-        int linha = listCidade.size()-1;
+        listFuncionario.clear();
+        listFuncionario.addAll(objDAOFuncionario.getLista());
+        int linha = listFuncionario.size()-1;
         if(linha>=0){
-            tblCidade.setRowSelectionInterval(linha, linha);
-      tblCidade.scrollRectToVisible(tblCidade.getCellRect(linha,linha,true));
+            tblFuncionario.setRowSelectionInterval(linha, linha);
+      tblFuncionario.scrollRectToVisible(tblFuncionario.getCellRect(linha,linha,true));
         }
     }
     
@@ -40,12 +45,12 @@ public class FormCidade extends javax.swing.JDialog {
         btnCancelar.setEnabled(editando);
         btnSalvar.setEnabled(editando);
         btnEditar.setEnabled(!editando);
-        int linha = listCidade.size()-1;
+        int linha = listFuncionario.size()-1;
         if(linha<0){
             btnEditar.setEnabled(false);
             btnExcluir.setEnabled(false);
-            txtCodigo.setText("");
-            txtNome.setText("");
+            txtCodigoFun.setText("");
+            txtCidadeFun.setText("");
         }else{
             btnExcluir.setEnabled(!editando);
         }
@@ -55,16 +60,16 @@ public class FormCidade extends javax.swing.JDialog {
         btnProximo.setEnabled(!editando);
         btnAnterior.setEnabled(!editando);
         btnUltimo.setEnabled(!editando);
-        txtNome.setEnabled(editando);
+        txtCidadeFun.setEnabled(editando);
         cbxUF.setEnabled(editando);
-        tblCidade.setEnabled(editando);
+        tblFuncionario.setEnabled(editando);
         
     }
     
     public boolean validaCampos(){
-        if(!(txtNome.getText().length()>0)){
+        if(!(txtCidadeFun.getText().length()>0)){
             JOptionPane.showMessageDialog(null, "Informe o nome da Cidade");
-            txtNome.requestFocus();
+            txtCidadeFun.requestFocus();
             return false;
         }
         if(!(cbxUF.getSelectedIndex()>=0)){
@@ -85,8 +90,11 @@ public class FormCidade extends javax.swing.JDialog {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
+        listFuncionario = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList<Funcionario>())
+        ;
         listCidade = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList<Cidade>())
         ;
+        converteData = new modelo.ConverteData();
         painelNavegacao = new javax.swing.JPanel();
         btnPrimeiro = new javax.swing.JButton();
         btnAnterior = new javax.swing.JButton();
@@ -96,20 +104,26 @@ public class FormCidade extends javax.swing.JDialog {
         painelAbas = new javax.swing.JTabbedPane();
         abaListagem = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblCidade = new javax.swing.JTable();
+        tblFuncionario = new javax.swing.JTable();
         abaDados = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtCodigo = new javax.swing.JTextField();
+        txtCodigoFun = new javax.swing.JTextField();
         painelAcoes = new javax.swing.JPanel();
         btnNovo = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
-        txtNome = new javax.swing.JTextField();
+        txtCidadeFun = new javax.swing.JTextField();
         cbxUF = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        txtNome1 = new javax.swing.JTextField();
+        txtSalario = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txtNascimento = new javax.swing.JFormattedTextField();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Cidades");
@@ -159,22 +173,30 @@ public class FormCidade extends javax.swing.JDialog {
 
         abaListagem.setLayout(new java.awt.BorderLayout());
 
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listCidade, tblCidade);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codigoCidade}"));
-        columnBinding.setColumnName("Código");
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listFuncionario, tblFuncionario);
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codigoFuncionario}"));
+        columnBinding.setColumnName("Codigo");
         columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nomeCidade}"));
-        columnBinding.setColumnName("Cidade");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nascimentoFuncionario}"));
+        columnBinding.setColumnName("Data de Nascimento");
+        columnBinding.setColumnClass(java.util.Calendar.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nomeFuncionario}"));
+        columnBinding.setColumnName("Nome");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${ufCidade}"));
-        columnBinding.setColumnName("Uf");
-        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${objCidade}"));
+        columnBinding.setColumnName("Cidade");
+        columnBinding.setColumnClass(modelo.Cidade.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${salarioFuncionario}"));
+        columnBinding.setColumnName("Salário");
+        columnBinding.setColumnClass(Double.class);
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
-        jScrollPane1.setViewportView(tblCidade);
+        jScrollPane1.setViewportView(tblFuncionario);
 
         abaListagem.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -186,10 +208,16 @@ public class FormCidade extends javax.swing.JDialog {
 
         jLabel3.setText("UF:");
 
-        txtCodigo.setEditable(false);
+        txtCodigoFun.setEditable(false);
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblCidade, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.codigoCidade}"), txtCodigo, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblFuncionario, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.codigoFuncionario}"), txtCodigoFun, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
+
+        txtCodigoFun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCodigoFunActionPerformed(evt);
+            }
+        });
 
         painelAcoes.setBorder(javax.swing.BorderFactory.createTitledBorder("Ações"));
         painelAcoes.setLayout(new java.awt.GridLayout(1, 0));
@@ -234,19 +262,51 @@ public class FormCidade extends javax.swing.JDialog {
         });
         painelAcoes.add(btnExcluir);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblCidade, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.nomeCidade}"), txtNome, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblFuncionario, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.objCidade}"), txtCidadeFun, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        txtNome.addActionListener(new java.awt.event.ActionListener() {
+        txtCidadeFun.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNomeActionPerformed(evt);
+                txtCidadeFunActionPerformed(evt);
             }
         });
 
         cbxUF.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MG", "SP", "RJ" }));
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblCidade, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.ufCidade}"), cbxUF, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblFuncionario, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.ufCidade}"), cbxUF, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
+
+        jLabel4.setText("Nome:");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, txtCidadeFun, org.jdesktop.beansbinding.ObjectProperty.create(), txtNome1, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        txtNome1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNome1ActionPerformed(evt);
+            }
+        });
+
+        txtSalario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSalarioActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Salario:");
+
+        txtNascimento.setText("  ");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblFuncionario, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.nascimentoFuncionario}"), txtNascimento, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        txtNascimento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNascimentoActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Nascimento:");
 
         javax.swing.GroupLayout abaDadosLayout = new javax.swing.GroupLayout(abaDados);
         abaDados.setLayout(abaDadosLayout);
@@ -256,18 +316,30 @@ public class FormCidade extends javax.swing.JDialog {
                 .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(abaDadosLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(painelAcoes, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE))
+                        .addComponent(painelAcoes, javax.swing.GroupLayout.DEFAULT_SIZE, 762, Short.MAX_VALUE))
                     .addGroup(abaDadosLayout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addGap(40, 40, 40)
-                        .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbxUF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(42, 42, 42)
+                        .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, abaDadosLayout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(65, 65, 65)
+                                .addComponent(cbxUF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, abaDadosLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(43, 43, 43)
+                                .addComponent(txtCodigoFun, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, abaDadosLayout.createSequentialGroup()
+                                .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel6))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtSalario, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtNome1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCidadeFun, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -275,19 +347,30 @@ public class FormCidade extends javax.swing.JDialog {
             abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(abaDadosLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(painelAcoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtCodigoFun, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(16, 16, 16)
+                .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtNome1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtSalario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(abaDadosLayout.createSequentialGroup()
-                        .addComponent(painelAcoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
-                        .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCodigo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(47, 47, 47)
-                        .addComponent(jLabel2))
-                    .addGroup(abaDadosLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(36, 36, 36)
+                        .addComponent(jLabel6))
+                    .addComponent(txtNascimento, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtCidadeFun, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbxUF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
@@ -317,8 +400,8 @@ public class FormCidade extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPrimeiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrimeiroActionPerformed
-       tblCidade.setRowSelectionInterval(0, 0);
-       tblCidade.scrollRectToVisible(tblCidade.getCellRect(0, 0, true));
+       tblFuncionario.setRowSelectionInterval(0, 0);
+       tblFuncionario.scrollRectToVisible(tblFuncionario.getCellRect(0, 0, true));
     }//GEN-LAST:event_btnPrimeiroActionPerformed
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
@@ -327,26 +410,26 @@ public class FormCidade extends javax.swing.JDialog {
         
     }//GEN-LAST:event_btnFecharActionPerformed
 
-    private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
+    private void txtCidadeFunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCidadeFunActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNomeActionPerformed
+    }//GEN-LAST:event_txtCidadeFunActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         // TODO add your handling code here:
         trataEdicao(true);
-        listCidade.add((Cidade)new Cidade());// cria um objeto e uma linha na tabela
-        int linha = listCidade.size()-1;
-        tblCidade.setRowSelectionInterval(linha, linha);// seleciona a linha
-        txtNome.requestFocus();// caixa texto nome recebe o foco
+        listFuncionario.add((Funcionario)new Funcionario());// cria um objeto e uma linha na tabela
+        int linha = listFuncionario.size()-1;
+        tblFuncionario.setRowSelectionInterval(linha, linha);// seleciona a linha
+        txtCidadeFun.requestFocus();// caixa texto nome recebe o foco
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         // TODO add your handling code here:
         if(validaCampos()){
         trataEdicao(false);
-        int linhaSelecionada = tblCidade.getSelectedRow();
-        Cidade objCidade = listCidade.get(linhaSelecionada);
-        objDAOCidade.salvar(objCidade);
+        int linhaSelecionada = tblFuncionario.getSelectedRow();
+        Funcionario objFuncionario = listFuncionario.get(linhaSelecionada);
+        objDAOFuncionario.salvar(objFuncionario);
         atualizaTabela();
         }
         
@@ -355,7 +438,7 @@ public class FormCidade extends javax.swing.JDialog {
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
         trataEdicao(true);
-        txtNome.requestFocus();
+        txtCidadeFun.requestFocus();
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -368,37 +451,53 @@ public class FormCidade extends javax.swing.JDialog {
         int opcao = JOptionPane.showOptionDialog(null, "Confirmar exclusão? ", "Pergunta", JOptionPane.YES_NO_OPTION, 
                 JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sim", "Não"}, "Sim");
         if(opcao == 0){
-            int linhaSelecionada = tblCidade.getSelectedRow();
-            Cidade objCidade = listCidade.get(linhaSelecionada);
-            objDAOCidade.remover(objCidade);
+            int linhaSelecionada = tblFuncionario.getSelectedRow();
+            Funcionario objFuncionario = listFuncionario.get(linhaSelecionada);
+            objDAOFuncionario.remover(objFuncionario);
             atualizaTabela();
             trataEdicao(false);
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorActionPerformed
-        int linha = tblCidade.getSelectedRow();
+        int linha = tblFuncionario.getSelectedRow();
         if((linha - 1) >= 0){
             linha--;
         }
-        tblCidade.setRowSelectionInterval(linha, linha);
-        tblCidade.scrollRectToVisible(tblCidade.getCellRect(linha, 0, true));
+        tblFuncionario.setRowSelectionInterval(linha, linha);
+        tblFuncionario.scrollRectToVisible(tblFuncionario.getCellRect(linha, 0, true));
     }//GEN-LAST:event_btnAnteriorActionPerformed
 
     private void btnProximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProximoActionPerformed
-        int linha = tblCidade.getSelectedRow();
-        if((linha + 1) <= (tblCidade.getRowCount())-1){
+        int linha = tblFuncionario.getSelectedRow();
+        if((linha + 1) <= (tblFuncionario.getRowCount())-1){
             linha++;
         }
-        tblCidade.setRowSelectionInterval(linha, linha);
-        tblCidade.scrollRectToVisible(tblCidade.getCellRect(linha, 0, true));
+        tblFuncionario.setRowSelectionInterval(linha, linha);
+        tblFuncionario.scrollRectToVisible(tblFuncionario.getCellRect(linha, 0, true));
     }//GEN-LAST:event_btnProximoActionPerformed
 
     private void btnUltimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUltimoActionPerformed
-        int linha = tblCidade.getRowCount()-1;
-        tblCidade.setRowSelectionInterval(linha, linha);
-        tblCidade.scrollRectToVisible(tblCidade.getCellRect(linha, 0, true));
+        int linha = tblFuncionario.getRowCount()-1;
+        tblFuncionario.setRowSelectionInterval(linha, linha);
+        tblFuncionario.scrollRectToVisible(tblFuncionario.getCellRect(linha, 0, true));
     }//GEN-LAST:event_btnUltimoActionPerformed
+
+    private void txtCodigoFunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoFunActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCodigoFunActionPerformed
+
+    private void txtNome1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNome1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNome1ActionPerformed
+
+    private void txtSalarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSalarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSalarioActionPerformed
+
+    private void txtNascimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNascimentoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNascimentoActionPerformed
 
     
     /**
@@ -418,20 +517,21 @@ public class FormCidade extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FormCidade.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FormCidade.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FormCidade.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FormCidade.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                FormCidade dialog = new FormCidade(new javax.swing.JFrame(), true);
+                FormFuncionario dialog = new FormFuncionario(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -457,17 +557,25 @@ public class FormCidade extends javax.swing.JDialog {
     private javax.swing.JButton btnSalvar;
     private javax.swing.JButton btnUltimo;
     private javax.swing.JComboBox<String> cbxUF;
+    private modelo.ConverteData converteData;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private java.util.List<Cidade> listCidade;
+    private java.util.List<Funcionario> listFuncionario;
     private javax.swing.JTabbedPane painelAbas;
     private javax.swing.JPanel painelAcoes;
     private javax.swing.JPanel painelNavegacao;
-    private javax.swing.JTable tblCidade;
-    private javax.swing.JTextField txtCodigo;
-    private javax.swing.JTextField txtNome;
+    private javax.swing.JTable tblFuncionario;
+    private javax.swing.JTextField txtCidadeFun;
+    private javax.swing.JTextField txtCodigoFun;
+    private javax.swing.JFormattedTextField txtNascimento;
+    private javax.swing.JTextField txtNome1;
+    private javax.swing.JTextField txtSalario;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 

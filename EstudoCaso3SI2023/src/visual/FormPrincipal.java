@@ -5,13 +5,12 @@
  */
 package visual;
 
-import java.util.Locale;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 /**
  *
- * @author guilh
+ * @author tulio
  */
 public class FormPrincipal extends javax.swing.JFrame {
 
@@ -31,7 +30,7 @@ public class FormPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        BarraMenu = new javax.swing.JMenuBar();
+        barraMenu = new javax.swing.JMenuBar();
         menuCadastro = new javax.swing.JMenu();
         menuCidade = new javax.swing.JMenuItem();
         menuFuncionario = new javax.swing.JMenuItem();
@@ -39,7 +38,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         menuSobre = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Sistema de Cadastro ");
+        setTitle("Sistema de Cadastro");
 
         menuCadastro.setText("Cadastro");
 
@@ -52,14 +51,9 @@ public class FormPrincipal extends javax.swing.JFrame {
         menuCadastro.add(menuCidade);
 
         menuFuncionario.setText("Funcionário");
-        menuFuncionario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuFuncionarioActionPerformed(evt);
-            }
-        });
         menuCadastro.add(menuFuncionario);
 
-        BarraMenu.add(menuCadastro);
+        barraMenu.add(menuCadastro);
 
         menuAjuda.setText("Ajuda");
 
@@ -71,9 +65,9 @@ public class FormPrincipal extends javax.swing.JFrame {
         });
         menuAjuda.add(menuSobre);
 
-        BarraMenu.add(menuAjuda);
+        barraMenu.add(menuAjuda);
 
-        setJMenuBar(BarraMenu);
+        setJMenuBar(barraMenu);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -83,32 +77,28 @@ public class FormPrincipal extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 277, Short.MAX_VALUE)
+            .addGap(0, 274, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void menuFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuFuncionarioActionPerformed
+    private void menuCidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCidadeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_menuFuncionarioActionPerformed
+        FormCidade form  = new FormCidade(this,true);
+        //this: chama a partir deste form
+        // true: Modal: sobre o form principal e não deixa acessa-lo
+        form.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        // não deixa fechar o form pelo x
+        form.setLocationRelativeTo(null); // centro
+        form.setResizable(false); // retira o botão maximizar
+        form.setVisible(true); //mostra o form
+    }//GEN-LAST:event_menuCidadeActionPerformed
 
     private void menuSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSobreActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(null, "Sistema de Cadastro\nDiretos reservados\nVersão 1.0");
+       JOptionPane.showMessageDialog(null,"Sistema de Cadastro\nDireitos reservado\nVersão 1.0");
     }//GEN-LAST:event_menuSobreActionPerformed
-
-    private void menuCidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCidadeActionPerformed
-        // TODO add your handling code here:
-       FormCidade form = new FormCidade (this,true); 
-       //this: chama a partir de form
-       // true: modal: sobre o form principal e não deixa acessa-lo
-       form.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-       //NÃO DEIXA FECHAR O FORM PELO X
-       form.setLocationRelativeTo(null);//centro
-       form.setResizable(false);//retira o botão maximizar
-       form.setVisible(true); //mostra o form
-    }//GEN-LAST:event_menuCidadeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -142,14 +132,14 @@ public class FormPrincipal extends javax.swing.JFrame {
             public void run() {
                // new FormPrincipal().setVisible(true);
                FormPrincipal form = new FormPrincipal();
-               form.setLocationRelativeTo(null);
+               form.setLocationRelativeTo(null);//janela no centro
                form.setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuBar BarraMenu;
+    private javax.swing.JMenuBar barraMenu;
     private javax.swing.JMenu menuAjuda;
     private javax.swing.JMenu menuCadastro;
     private javax.swing.JMenuItem menuCidade;
