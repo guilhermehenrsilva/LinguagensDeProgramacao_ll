@@ -16,7 +16,7 @@ import java.sql.SQLException;
  */
 public class Conexao {
     
-    private static final String driver = "com.mysql.jdc.Driver";
+    private static final String driver = "com.mysql.jdbc.Driver";
     private static final String banco = "jdbc:mysql://localhost:3306/estudocaso3si";
     private static final String usuario = "root";
     private static final String senha = "";
@@ -36,7 +36,7 @@ public class Conexao {
                 System.out.println("Erro de conexão: "+ex.getMessage());
             }
         }
-    return null;
+    return con;
     }
     
     public static PreparedStatement getPreparedStatement(String sql){
