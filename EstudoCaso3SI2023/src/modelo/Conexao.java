@@ -15,48 +15,40 @@ import java.sql.SQLException;
  * @author tulio
  */
 public class Conexao {
-    
     private static final String driver = "com.mysql.jdbc.Driver";
     private static final String banco = "jdbc:mysql://localhost:3306/estudocaso3si";
     private static final String usuario = "root";
     private static final String senha = "";
     
     private static Connection con = null;
+
+    public Conexao() {
+    }
     
-    public Conexao(){         
-}
     public static Connection getConexao(){
-        if (con==null){
+        if(con==null){
             try{
                 Class.forName(driver);
                 con = DriverManager.getConnection(banco,usuario,senha);
             }catch(ClassNotFoundException ex){
                 System.out.println("Não encontrou o driver: "+ex.getMessage());
-            }catch (SQLException ex){
+            }catch(SQLException ex){
                 System.out.println("Erro de conexão: "+ex.getMessage());
             }
         }
-    return con;
+        return con;
     }
     
     public static PreparedStatement getPreparedStatement(String sql){
-        if (con==null){
+        if(con==null){
             con = getConexao();
         }
         try{
             return con.prepareStatement(sql);
         }catch(SQLException ex){
-            System.out.println("Erro de SQL"+ex.getMessage());
+            System.out.println("Erro de SQL: "+ex.getMessage());
         }
         return null;
     }
-
-
-
-
-
-
-
     
-} 
-
+}

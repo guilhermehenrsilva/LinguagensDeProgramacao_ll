@@ -5,6 +5,7 @@
  */
 package modelo;
 
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,27 +32,89 @@ public class DAOCidade { // Data Acess Object
                 objCidade.setUfCidade(rs.getString("uf"));
                 listaCidade.add(objCidade);
             }
-        }catch (SQLException ex){
-            JOptionPane.showMessageDialog(null,"Erro de SQL:"+ex.getMessage());
-    }
-        
-        return Dados.listaCidade;
-    }
-    
-    public boolean salvar(Cidade obj){
-        if(obj.getCodigoCidade()==null){
-            Integer codigo = Dados.listaCidade.size() +1;
-            obj.setCodigoCidade(codigo);
-            Dados.listaCidade.add(obj);
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, "Erro de SQL: "+ex.getMessage());
         }
-        return true;
+        return listaCidade;
     }
     
-    public boolean remover(Cidade obj){
-        Dados.listaCidade.remove(obj);
-        return true;
-    }    
+  public boolean incluir(Cidade obj) {
+        String sql = "insert into cidade (nome,uf) values(?,?)";
+        try {
+            PreparedStatement pst = Conexao.getPreparedStatement(sql);
+            pst.setString(1, obj.getNomeCidade());
+            pst.setString(2, obj.getUfCidade());
+            if (pst.executeUpdate() > 0) {
+                JOptionPane.showMessageDialog(null, "Cidade incluida");
+               return false;
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro de SQL no incluir do DAOCidade" + e.getMessage());
 
+        }
+        return false;
+  }
+  public boolean salvar(Cidade obj) {
+        if (obj.getCodigoCidade()== null) {
+            return incluir(obj);
+        } else {
+            //return alterar(obj);
+            return true;
+        }
+
+    }
+  public boolean alterar(Cidade obj) {
+        String sql = "update cidade set nome=?, uf? where codigo=?";
+        try {
+            PreparedStatement pst = Conexao.getPreparedStatement(sql);
+            pst.setString(1, obj.getNomeCidade());
+            pst.setString(2, obj.getUfCidade());
+            pst.setInt(3,obj.getCodigoCidade());
+            if (pst.executeUpdate() > 0) {
+                JOptionPane.showMessageDialog(null, "Cidade Alterada");
+               return false;
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro de SQL no alterar do DAOCidade" + e.getMessage());
+
+        }
+        return false;
+  }
+  public boolean remover(Cidade obj) {
+        String sql = "delete from cidade where codigo=?";
+        try {
+            PreparedStatement pst = Conexao.getPreparedStatement(sql);
+            pst.setInt(1,obj.getCodigoCidade());
+            if (pst.executeUpdate() > 0) {
+                JOptionPane.showMessageDialog(null, "Cidade Excluida");
+               return false;
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro de SQL no alterar do DAOCidade" + e.getMessage());
+
+        }
+        return false;
+  }
+ 
+   public Cidade localizar(Integer id){
+        String sql = "select * from cidade where codigo=?";
+        Cidade obj = new Cidade();
+        try{
+            PreparedStatement pst = Conexao.getPreparedStatement(sql);
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+while(rs.next()){
+                obj.setCodigoCidade(rs.getInt("codigo"));
+                obj.setNomeCidade(rs.getString("nome"));
+                obj.setUfCidade(rs.getString("uf"));
+                return obj;
+            }
+}catch(SQLException e){
+            JOptionPane.showMessageDialog
+        (null,"Erro de SQL Localizar"+e.getMessage());
+    }
+        return null;
+    }                     
 }
     
 

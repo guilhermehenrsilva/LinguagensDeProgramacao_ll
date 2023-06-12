@@ -347,7 +347,7 @@ public class FormCidade extends javax.swing.JDialog {
         trataEdicao(false);
         int linhaSelecionada = tblCidade.getSelectedRow();
         Cidade objCidade = listCidade.get(linhaSelecionada);
-        objDAOCidade.salvar(objCidade);
+        //objDAOCidade.salvar(objCidade);
         atualizaTabela();
         }
         
