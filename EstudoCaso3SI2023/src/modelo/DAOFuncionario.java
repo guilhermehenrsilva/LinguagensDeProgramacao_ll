@@ -21,7 +21,7 @@ public class DAOFuncionario { // Data Acess Object
    
     DAOCidade objDAOCidade = new DAOCidade();
     
-    public List<Funcionario> getLista(){
+   /* public List<Funcionario> getLista(){
         return Dados.listaFuncionario;
     }
     
@@ -37,8 +37,8 @@ public class DAOFuncionario { // Data Acess Object
     public boolean remover(Funcionario obj){
         Dados.listaFuncionario.remove(obj);
         return true;
-    }    
- public List<Funcionario> getLita(){
+    }    */
+ public List<Funcionario> getLista(){
         String sql = "select * from funcionario";
         List<Funcionario> lista = new ArrayList<>();
         try{
@@ -63,7 +63,80 @@ public class DAOFuncionario { // Data Acess Object
         }
         return lista;
     }
+ 
+ public boolean incluir(Funcionario obj) {
+        String sql = "insert into funcionario (nome,salario,nascimento,cidade) values(?,?,?,?)";
+        try {
+            PreparedStatement pst = Conexao.getPreparedStatement(sql);
+            pst.setString(1, obj.getNomeFuncionario());
+            pst.setDouble(2, obj.getSalarioFuncionario());
+            pst.setDate(3, new java.sql.Date(obj.getNascimentoFuncionario().getTimeInMillis()));
+            pst.setInt(4, obj.getObjCidade().getCodigoCidade());
+            if (pst.executeUpdate() > 0) {
+                JOptionPane.showMessageDialog(null, "Funcionário incluido");
+               return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Funcionario não incluido");
+                return false;
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro de SQL no incluir do DAOFuncionario" + e.getMessage());
+
+        }
+        return false;
+  }
+  public boolean salvar(Funcionario obj) throws SQLException {
+        if (obj.getCodigoFuncionario()== null) {
+            return incluir(obj);
+        } else {
+            return alterar(obj);
+           
+        }
+
+    }
+  public boolean alterar(Funcionario obj)throws SQLException {
+        String sql = "update Funcionario set nome=?,salario=?, nascimento=?, cidade=? where codigo=?";
+        try {
+            PreparedStatement pst = Conexao.getPreparedStatement(sql);
+            pst.setString(1, obj.getNomeFuncionario());
+            pst.setDouble(2, obj.getSalarioFuncionario());
+            pst.setDate(3, new java.sql.Date(obj.getNascimentoFuncionario().getTimeInMillis()));
+            pst.setInt(4, obj.getObjCidade().getCodigoCidade());
+            pst.setInt(5,obj.getCodigoFuncionario());
+            if (pst.executeUpdate() > 0) {
+                JOptionPane.showMessageDialog(null, "Funcionario Alterado");
+               return true;
+            }else{
+                JOptionPane.showMessageDialog(null, "Funcionario não Alterado");
+               return false;
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro de SQL no alterar do DAOFuncionario" + e.getMessage());
+
+        }
+        return false;
+  }
+  public boolean remover(Funcionario obj) {
+        String sql = "delete from Funcionario where codigo=?";
+        try {
+            PreparedStatement pst = Conexao.getPreparedStatement(sql);
+            pst.setInt(1,obj.getCodigoFuncionario());
+            if (pst.executeUpdate() > 0) {
+                JOptionPane.showMessageDialog(null, "Funcionario Excluido");
+               return true;
+            }else{
+                JOptionPane.showMessageDialog(null, "Funcionario não Excluido");
+               return false;
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro de SQL no alterar do DAOFuncionario" + e.getMessage());
+
+        }
+        return false;
+  }
 }
+ 
+  
     
 
     
