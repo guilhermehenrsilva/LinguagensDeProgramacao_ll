@@ -5,6 +5,7 @@
  */
 package visual;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import modelo.Clientes;
@@ -46,15 +47,23 @@ public class FormCliente extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "E-mail do Cliente");
             return false;
         }
-        else if(!(txtNascimento.getText().length() > 0)){
-            JOptionPane.showMessageDialog(null, "Data de nascimento do Cliente");
-            return false;
+        else if ((txtNascimento.getText().length() > 0)) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            sdf.setLenient(false);
+            try {
+                sdf.parse(txtNascimento.getText());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Informe a data de nascimento");
+                txtNascimento.requestFocus();
+                return false;
+            }
+
         }
         else if(!(txtTelefone.getText().length() > 0)){
             JOptionPane.showMessageDialog(null, "Telefone do Cliente");
             return false;
         }
-        
+    
         return true;
     }
     
@@ -68,6 +77,7 @@ public class FormCliente extends javax.swing.JDialog {
             btnExcluir.setEnabled(false);
             txtCodigo.setText("");
             txtNomeCliente.setText("");
+           
         } else {
           btnExcluir.setEnabled(!editando);
         }

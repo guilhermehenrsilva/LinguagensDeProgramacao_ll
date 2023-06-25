@@ -24,11 +24,11 @@ public class DAOCliente {
                 obj.setNomeCliente(rs.getString("nomeCliente"));
                 obj.setCpf(rs.getString("cpf"));
                 obj.setEmail(rs.getString("email"));
-                obj.setTelefone(rs.getString("telefone"));
                 java.sql.Date dt = rs.getDate("dataNascimento");
                 Calendar c = Calendar.getInstance();
                 c.setTime(dt);
                 obj.setDataNascimento(c);
+                obj.setTelefone(rs.getString("telefone"));
                 lista.add(obj);
             }
         } catch (SQLException e) {
@@ -37,12 +37,12 @@ public class DAOCliente {
         return lista;
     }
     public boolean incluir(Clientes obj) {
-        String sql = "insert into clientes (codCliente , nomeCliente,cpf,telefone,email) values(null,?,?,?,?)";
+        String sql = "insert into clientes ( nomeCliente,cpf,dataNascimento ,telefone,email) values(?,?,?,?,?)";
         try {
             PreparedStatement pst = Conexao.getPreparedStatement(sql);
             pst.setString(1, obj.getNomeCliente());
             pst.setString(2, obj.getCpf());
-           // pst.setDate(3, new java.sql.Date(obj.getDataNascimento().getTimeInMillis()));
+            pst.setDate(3, new java.sql.Date(obj.getDataNascimento().getTimeInMillis()));
             pst.setString(3, obj.getTelefone());
             pst.setString(4, obj.getEmail());
           
