@@ -30,7 +30,7 @@ public class DAOCliente {
                 lista.add(obj);
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro de SQL no getLista()" + e.getMessage());
+            JOptionPane.showMessageDialog(null,"Erro de SQL no getLista()" + e.getMessage());
         }
         return lista;
     }
