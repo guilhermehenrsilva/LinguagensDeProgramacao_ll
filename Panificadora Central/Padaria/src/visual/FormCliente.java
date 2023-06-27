@@ -106,6 +106,7 @@ public class FormCliente extends javax.swing.JDialog {
 
         listCliente = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList<modelo.Clientes>())
         ;
+        converteData1 = new modelo.ConverteData();
         pnlNav = new javax.swing.JPanel();
         btnPrimeiro = new javax.swing.JButton();
         btnProximo = new javax.swing.JButton();
@@ -206,14 +207,14 @@ public class FormCliente extends javax.swing.JDialog {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cpf}"));
         columnBinding.setColumnName("Cpf");
         columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${dataNascimento}"));
-        columnBinding.setColumnName("Data Nascimento");
-        columnBinding.setColumnClass(java.util.Calendar.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${email}"));
-        columnBinding.setColumnName("Email");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nascimentoFormatado}"));
+        columnBinding.setColumnName("Data de Nascimento");
         columnBinding.setColumnClass(String.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${telefone}"));
         columnBinding.setColumnName("Telefone");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${email}"));
+        columnBinding.setColumnName("Email");
         columnBinding.setColumnClass(String.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
@@ -306,6 +307,7 @@ public class FormCliente extends javax.swing.JDialog {
         lblDataNascimento.setText("Data de Nascimento");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblCliente, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.dataNascimento}"), txtNascimento, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        binding.setConverter(converteData1);
         bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout abaDadosLayout = new javax.swing.GroupLayout(abaDados);
@@ -467,10 +469,9 @@ public class FormCliente extends javax.swing.JDialog {
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         // TODO add your handling code here:
         if(validaCampos()) {
-            
             int linhaSelecionada = tblCliente.getSelectedRow(); // pegar linha selecionada
             Clientes objCliente  = listCliente.get(linhaSelecionada); // criar referencia para pegar o objeto que foi criado em novo
-            objDAOCliente.incluir(objCliente);
+            objDAOCliente.salvar(objCliente);
             atualizaTabela();
             trataEdicao(false);
            
@@ -478,7 +479,17 @@ public class FormCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        // TODO add your handling code here:
+       int opcao = JOptionPane.showOptionDialog(null, "Confirma Exclusão?",
+                "Pergunta", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                null, new String[]{"Sim", "Não"}, "Sim");
+
+        if (opcao == 0) {
+            int linhaSelecionada = tblCliente.getSelectedRow();
+            Clientes obj = listCliente.get(linhaSelecionada);
+            objDAOCliente.remover(obj);
+            atualizaTabela();
+            trataEdicao(false);
+        }
         
     }//GEN-LAST:event_btnExcluirActionPerformed
 
@@ -537,6 +548,7 @@ public class FormCliente extends javax.swing.JDialog {
     private javax.swing.JButton btnProximo;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JButton btnUltimo;
+    private modelo.ConverteData converteData1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

@@ -8,6 +8,8 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;modelo.Clientes&gt;"/>
       </AuxValues>
     </Component>
+    <Component class="modelo.ConverteData" name="converteData1">
+    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
@@ -190,16 +192,16 @@
                         <BindingParameter name="NAME" value="Cpf"/>
                         <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                       </Subbinding>
-                      <Subbinding sourcePath="${dataNascimento}">
-                        <BindingParameter name="NAME" value="Data Nascimento"/>
-                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Calendar.class"/>
-                      </Subbinding>
-                      <Subbinding sourcePath="${email}">
-                        <BindingParameter name="NAME" value="Email"/>
+                      <Subbinding sourcePath="${nascimentoFormatado}">
+                        <BindingParameter name="NAME" value="Data de Nascimento"/>
                         <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                       </Subbinding>
                       <Subbinding sourcePath="${telefone}">
                         <BindingParameter name="NAME" value="Telefone"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                      </Subbinding>
+                      <Subbinding sourcePath="${email}">
+                        <BindingParameter name="NAME" value="Email"/>
                         <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                       </Subbinding>
                     </BindingProperty>
@@ -482,7 +484,11 @@
             </Component>
             <Component class="javax.swing.JFormattedTextField" name="txtNascimento">
               <BindingProperties>
-                <BindingProperty name="value" source="tblCliente" sourcePath="${selectedElement.dataNascimento}" target="txtNascimento" targetPath="value" updateStrategy="0" immediately="false"/>
+                <BindingProperty name="value" source="tblCliente" sourcePath="${selectedElement.dataNascimento}" target="txtNascimento" targetPath="value" updateStrategy="0" immediately="false">
+                  <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                    <ComponentRef name="converteData1"/>
+                  </Property>
+                </BindingProperty>
               </BindingProperties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(maskData)"/>
