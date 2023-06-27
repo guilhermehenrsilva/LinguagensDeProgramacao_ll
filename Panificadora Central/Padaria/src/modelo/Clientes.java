@@ -12,7 +12,7 @@ public class Clientes implements Serializable{
     private String nomeCliente;
     private String cpf;
     private String email;
-    private String telefone;
+    private String telefone ;
     private Calendar dataNascimento;
 
     public Calendar getDataNascimento() {
