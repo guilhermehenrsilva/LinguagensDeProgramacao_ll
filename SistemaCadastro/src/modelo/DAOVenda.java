@@ -36,7 +36,7 @@ public class DAOVenda { // data acess object
                 if (rs.next()) {
                     lastId = rs.getInt(1); //armazena o último idCaixa cadastrado
                 }
-                // JOptionPane.showMessageDialog(null, "Venda cadastrada com sucesso!");
+                 JOptionPane.showMessageDialog(null, "Venda cadastrada com sucesso!");
 
             } else {
                  JOptionPane.showMessageDialog(null, "Venda não cadastrada");

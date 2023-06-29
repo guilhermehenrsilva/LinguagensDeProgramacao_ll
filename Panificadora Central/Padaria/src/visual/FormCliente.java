@@ -151,6 +151,7 @@ public class FormCliente extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro Cliente");
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         pnlNav.setBorder(javax.swing.BorderFactory.createTitledBorder("Navegação"));
         pnlNav.setLayout(new java.awt.GridLayout(1, 0));
@@ -369,7 +370,7 @@ public class FormCliente extends javax.swing.JDialog {
                                     .addComponent(lblTelefone)
                                     .addComponent(lblDataNascimento))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtNascimento, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE))
+                                .addComponent(txtNascimento))
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblEmail)
@@ -397,7 +398,7 @@ public class FormCliente extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(pnlNav, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pnlAbas, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
+                .addComponent(pnlAbas, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -467,7 +468,7 @@ public class FormCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        // TODO add your handling code here:
+        
         if(validaCampos()) {
             int linhaSelecionada = tblCliente.getSelectedRow(); // pegar linha selecionada
             Clientes objCliente  = listCliente.get(linhaSelecionada); // criar referencia para pegar o objeto que foi criado em novo

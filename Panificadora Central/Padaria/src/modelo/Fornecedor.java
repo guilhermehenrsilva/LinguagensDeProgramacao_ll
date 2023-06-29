@@ -5,27 +5,32 @@ import java.util.Objects;
 
 public class Fornecedor implements Serializable{
     
-    private String tipo;
-    private Double valor;
     private Integer codFornecedor;
-
+    private String cnpj;
+    private String nomeFornecedor;
+    private String telefoneFornecedor;
+    private String email;
+    private String cidadeFornecedor;
+    private String uf;
+    
+    
     public Fornecedor() {
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getCidadeFornecedor() {
+        return cidadeFornecedor;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setCidadeFornecedor(String cidadeFornecedor) {
+        this.cidadeFornecedor = cidadeFornecedor;
     }
 
-    public Double getValor() {
-        return valor;
+    public String getUf() {
+        return uf;
     }
 
-    public void setValor(Double valor) {
-        this.valor = valor;
+    public void setUf(String uf) {
+        this.uf = uf;
     }
 
     public Integer getCodFornecedor() {
@@ -35,12 +40,37 @@ public class Fornecedor implements Serializable{
     public void setCodFornecedor(Integer codFornecedor) {
         this.codFornecedor = codFornecedor;
     }
-    
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 97 * hash + Objects.hashCode(this.codFornecedor);
-        return hash;
+
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+    public String getNomeFornecedor() {
+        return nomeFornecedor;
+    }
+
+    public void setNomeFornecedor(String nomeFornecedor) {
+        this.nomeFornecedor = nomeFornecedor;
+    }
+
+    public String getTelefoneFornecedor() {
+        return telefoneFornecedor;
+    }
+
+    public void setTelefoneFornecedor(String telefoneFornecedor) {
+        this.telefoneFornecedor = telefoneFornecedor;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
@@ -60,6 +90,12 @@ public class Fornecedor implements Serializable{
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return nomeFornecedor;
+    }
+    
     
     
 }

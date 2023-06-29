@@ -23,16 +23,17 @@ public class FormPrincipal extends javax.swing.JFrame {
 
         menuBarra = new javax.swing.JMenuBar();
         menuCadastro = new javax.swing.JMenu();
-        menuFuncionario = new javax.swing.JMenuItem();
-        menuFornecedor = new javax.swing.JMenuItem();
-        menuProduto = new javax.swing.JMenuItem();
-        menuVenda = new javax.swing.JMenuItem();
         menuCliente = new javax.swing.JMenuItem();
+        menuFornecedor = new javax.swing.JMenuItem();
+        menuCategoria = new javax.swing.JMenuItem();
+        menuProduto = new javax.swing.JMenuItem();
+        menuVendas = new javax.swing.JMenu();
+        menuVenda = new javax.swing.JMenuItem();
         menuAjuda = new javax.swing.JMenu();
         menuSobre = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Padaria Pão de Mel");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("PANIFICADORA CENTRAL");
         setResizable(false);
 
         menuBarra.setBorder(null);
@@ -40,33 +41,6 @@ public class FormPrincipal extends javax.swing.JFrame {
 
         menuCadastro.setText("Cadastros");
         menuCadastro.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
-        menuFuncionario.setText("Funcionario");
-        menuFuncionario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuFuncionarioActionPerformed(evt);
-            }
-        });
-        menuCadastro.add(menuFuncionario);
-
-        menuFornecedor.setText("Fornecedor");
-        menuFornecedor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuFornecedorActionPerformed(evt);
-            }
-        });
-        menuCadastro.add(menuFornecedor);
-
-        menuProduto.setText("Produto");
-        menuProduto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuProdutoActionPerformed(evt);
-            }
-        });
-        menuCadastro.add(menuProduto);
-
-        menuVenda.setText("Venda");
-        menuCadastro.add(menuVenda);
 
         menuCliente.setText("Cliente");
         menuCliente.addActionListener(new java.awt.event.ActionListener() {
@@ -76,7 +50,44 @@ public class FormPrincipal extends javax.swing.JFrame {
         });
         menuCadastro.add(menuCliente);
 
+        menuFornecedor.setText("Fornecedor");
+        menuFornecedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuFornecedorActionPerformed(evt);
+            }
+        });
+        menuCadastro.add(menuFornecedor);
+
+        menuCategoria.setText("Categoria");
+        menuCategoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCategoriaActionPerformed(evt);
+            }
+        });
+        menuCadastro.add(menuCategoria);
+
+        menuProduto.setText("Produto");
+        menuProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuProdutoActionPerformed(evt);
+            }
+        });
+        menuCadastro.add(menuProduto);
+
         menuBarra.add(menuCadastro);
+
+        menuVendas.setText("Vendas");
+        menuVendas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        menuVenda.setText("Vendas");
+        menuVenda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuVendaActionPerformed(evt);
+            }
+        });
+        menuVendas.add(menuVenda);
+
+        menuBarra.add(menuVendas);
 
         menuAjuda.setText("Ajuda");
         menuAjuda.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -97,40 +108,25 @@ public class FormPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 519, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 280, Short.MAX_VALUE)
+            .addGap(0, 369, Short.MAX_VALUE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void menuClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuClienteActionPerformed
+    private void menuSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSobreActionPerformed
         // TODO add your handling code here:
-        FormCliente form = new FormCliente(this,true); 
-        //true: Define como janela modal: Sobrepõe o FormPrincipal e não deixa acessa-lo
-        form.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        form.setLocationRelativeTo(null);
-        form.setResizable(false);
-        form.setVisible(true);
-    }//GEN-LAST:event_menuClienteActionPerformed
-
-    private void menuFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuFuncionarioActionPerformed
-        // TODO add your handling code here:
-        FormFuncionario form = new FormFuncionario(this,true); 
-        //true: Define como janela modal: Sobrepõe o FormPrincipal e não deixa acessa-lo
-        form.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        form.setLocationRelativeTo(null);
-        form.setResizable(false);
-        form.setVisible(true);
-    }//GEN-LAST:event_menuFuncionarioActionPerformed
+        JOptionPane.showMessageDialog(null, "Panificadora Central\nDireitos Reservados\nVersão 1.0");
+    }//GEN-LAST:event_menuSobreActionPerformed
 
     private void menuProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProdutoActionPerformed
         // TODO add your handling code here:
-        FormProduto form = new FormProduto(this,true); 
+        FormProduto form = new FormProduto(this,true);
         //true: Define como janela modal: Sobrepõe o FormPrincipal e não deixa acessa-lo
         form.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         form.setLocationRelativeTo(null);
@@ -138,20 +134,39 @@ public class FormPrincipal extends javax.swing.JFrame {
         form.setVisible(true);
     }//GEN-LAST:event_menuProdutoActionPerformed
 
-    private void menuSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSobreActionPerformed
+    private void menuCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCategoriaActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(null, "Panificadora Central\nDireitos Reservados\nVersão 1.0");
-    }//GEN-LAST:event_menuSobreActionPerformed
+        FormCategoria form = new FormCategoria(this,true);
+        //true: Define como janela modal: Sobrepõe o FormPrincipal e não deixa acessa-lo
+        form.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        form.setLocationRelativeTo(null);
+        form.setResizable(false);
+        form.setVisible(true);        // TODO add your handling code here:
+    }//GEN-LAST:event_menuCategoriaActionPerformed
 
     private void menuFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuFornecedorActionPerformed
         // TODO add your handling code here:
-        FormFornecedor form = new FormFornecedor(this,true); 
+        FormFornecedor form = new FormFornecedor(this,true);
         //true: Define como janela modal: Sobrepõe o FormPrincipal e não deixa acessa-lo
         form.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         form.setLocationRelativeTo(null);
         form.setResizable(false);
         form.setVisible(true);
     }//GEN-LAST:event_menuFornecedorActionPerformed
+
+    private void menuClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuClienteActionPerformed
+        // TODO add your handling code here:
+        FormCliente form = new FormCliente(this,true);
+        //true: Define como janela modal: Sobrepõe o FormPrincipal e não deixa acessa-lo
+        form.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        form.setLocationRelativeTo(null);
+        form.setResizable(false);
+        form.setVisible(true);
+    }//GEN-LAST:event_menuClienteActionPerformed
+
+    private void menuVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuVendaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuVendaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -193,11 +208,12 @@ public class FormPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu menuAjuda;
     private javax.swing.JMenuBar menuBarra;
     private javax.swing.JMenu menuCadastro;
+    private javax.swing.JMenuItem menuCategoria;
     private javax.swing.JMenuItem menuCliente;
     private javax.swing.JMenuItem menuFornecedor;
-    private javax.swing.JMenuItem menuFuncionario;
     private javax.swing.JMenuItem menuProduto;
     private javax.swing.JMenuItem menuSobre;
     private javax.swing.JMenuItem menuVenda;
+    private javax.swing.JMenu menuVendas;
     // End of variables declaration//GEN-END:variables
 }

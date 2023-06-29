@@ -7,12 +7,17 @@ package visual;
 
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import modelo.Categoria;
+import modelo.DAOCategoria;
+import modelo.DAOFornecedor;
 import modelo.Produto;
 import modelo.DAOProduto;
+import modelo.Fornecedor;
 
 public class FormProduto extends javax.swing.JDialog {
     DAOProduto objDAOProduto = new DAOProduto();
-
+    DAOCategoria objDAOCategoria = new DAOCategoria();
+    DAOFornecedor objDAOFornecedor = new DAOFornecedor();
     /**
      * Creates new form FormCliente
      */
@@ -21,10 +26,15 @@ public class FormProduto extends javax.swing.JDialog {
         initComponents();
         atualizaTabela();
         trataEdicao(false);  
+        listCategoria.clear();
+        listCategoria.addAll(objDAOCategoria.getLista());
+        listFornecedor.clear();
+        listFornecedor.addAll(objDAOFornecedor.getLista());
     }
     public void atualizaTabela(){
         listProduto.clear();
         listProduto.addAll(objDAOProduto.getLista());
+        
         int linha = listProduto.size()-1;
         if(linha >= 0){
             tblProduto.setRowSelectionInterval(linha, linha);
@@ -35,22 +45,27 @@ public class FormProduto extends javax.swing.JDialog {
     public boolean validaCampos(){
         
         if(!(txtNome.getText().length() > 0)){
-            JOptionPane.showMessageDialog(null, "Nome do Produto");
+            JOptionPane.showMessageDialog(null, "Informe Nome do Produto");
             return false;
         }
-        else if(!(txtMarca.getText().length() > 0)){
-            JOptionPane.showMessageDialog(null, "Marca do Produto");
+        else if(!(txtPrecoVenda.getText().length() > 0)){
+            JOptionPane.showMessageDialog(null, "informe preço do Produto");
             return false;
         }
-        else if(txtValor.getText().length() > 0){
-            JOptionPane.showMessageDialog(null, "Valor do Produto");
+        else if(!(txtQtdEstoque.getText().length() > 0)){
+            JOptionPane.showMessageDialog(null, "Informe a Quantidade do Produto");
             return false;
         }
-        else if(!(txtCategoria.getText().length() > 0)){
-            JOptionPane.showMessageDialog(null, "Categoria do Produto");
+        else if (!(cbxCategoria.getSelectedIndex() >= 0)) {
+            JOptionPane.showMessageDialog(null, "Informe a categoria do Produto");
+            cbxCategoria.requestFocus();
             return false;
         }
-        
+        else if (!(cbxFornecedor.getSelectedIndex() >= 0)) {
+            JOptionPane.showMessageDialog(null, "Informe o fornecedor do Produto");
+            cbxFornecedor.requestFocus();
+            return false;
+        }            
         return true;
     }
     
@@ -64,6 +79,9 @@ public class FormProduto extends javax.swing.JDialog {
             btnExcluir.setEnabled(false);
             txtCodigo.setText("");
             txtNome.setText("");
+            txtPrecoVenda.setText("");
+            txtQtdEstoque.setText("");
+            
         } else {
           btnExcluir.setEnabled(!editando);
         }
@@ -75,9 +93,10 @@ public class FormProduto extends javax.swing.JDialog {
         btnUltimo.setEnabled(!editando);
         
         txtNome.setEnabled(editando);
-        txtMarca.setEnabled(editando);
-        txtValor.setEnabled(editando);
-        txtCategoria.setEnabled(editando);  
+        txtPrecoVenda.setEnabled(editando);
+        txtQtdEstoque.setEnabled(editando);
+        cbxCategoria.setEnabled(editando);
+        cbxFornecedor.setEnabled(editando);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -90,6 +109,10 @@ public class FormProduto extends javax.swing.JDialog {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         listProduto = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList<Produto>())
+        ;
+        listCategoria = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList<Categoria>())
+        ;
+        listFornecedor = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList<Fornecedor>())
         ;
         pnlNav = new javax.swing.JPanel();
         btnPrimeiro = new javax.swing.JButton();
@@ -112,17 +135,18 @@ public class FormProduto extends javax.swing.JDialog {
         lblNome = new javax.swing.JLabel();
         lblValor = new javax.swing.JLabel();
         lblCategoria = new javax.swing.JLabel();
-        lblMarca = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtNome = new javax.swing.JTextPane();
         jScrollPane2 = new javax.swing.JScrollPane();
-        txtMarca = new javax.swing.JTextPane();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        txtCategoria = new javax.swing.JTextPane();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        txtValor = new javax.swing.JTextPane();
+        txtPrecoVenda = new javax.swing.JTextPane();
         jScrollPane6 = new javax.swing.JScrollPane();
         txtCodigo = new javax.swing.JTextPane();
+        cbxCategoria = new javax.swing.JComboBox<>();
+        lblNome1 = new javax.swing.JLabel();
+        lblNome3 = new javax.swing.JLabel();
+        cbxFornecedor = new javax.swing.JComboBox<>();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        txtQtdEstoque = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro Produto");
@@ -174,25 +198,26 @@ public class FormProduto extends javax.swing.JDialog {
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listProduto, tblProduto);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codProduto}"));
-        columnBinding.setColumnName("Código");
+        columnBinding.setColumnName("Cod Produto");
         columnBinding.setColumnClass(Integer.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nome}"));
-        columnBinding.setColumnName("Nome");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nomeProduto}"));
+        columnBinding.setColumnName("Nome Produto");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${valor}"));
-        columnBinding.setColumnName("Valor");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${precoVenda}"));
+        columnBinding.setColumnName("Preco Venda");
+        columnBinding.setColumnClass(Double.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${qtdEstoque}"));
+        columnBinding.setColumnName("Qtd Estoque");
         columnBinding.setColumnClass(Double.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${categoria}"));
         columnBinding.setColumnName("Categoria");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${marca}"));
-        columnBinding.setColumnName("Marca");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
+        columnBinding.setColumnClass(modelo.Categoria.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fornecedor}"));
+        columnBinding.setColumnName("Fornecedor");
+        columnBinding.setColumnClass(modelo.Fornecedor.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane1.setViewportView(tblProduto);
@@ -248,31 +273,19 @@ public class FormProduto extends javax.swing.JDialog {
 
         lblNome.setText("Nome");
 
-        lblValor.setText("Valor");
+        lblValor.setText("Preço");
 
-        lblCategoria.setText("Categoria");
+        lblCategoria.setText("Quantidade em estoque");
 
-        lblMarca.setText("Marca");
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblProduto, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.nome}"), txtNome, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblProduto, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.nomeProduto}"), txtNome, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         jScrollPane3.setViewportView(txtNome);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblProduto, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.marca}"), txtMarca, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblProduto, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.precoVenda}"), txtPrecoVenda, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        jScrollPane2.setViewportView(txtMarca);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblProduto, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.categoria}"), txtCategoria, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        bindingGroup.addBinding(binding);
-
-        jScrollPane4.setViewportView(txtCategoria);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblProduto, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.valor}"), txtValor, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        bindingGroup.addBinding(binding);
-
-        jScrollPane5.setViewportView(txtValor);
+        jScrollPane2.setViewportView(txtPrecoVenda);
 
         txtCodigo.setEditable(false);
 
@@ -281,6 +294,25 @@ public class FormProduto extends javax.swing.JDialog {
 
         jScrollPane6.setViewportView(txtCodigo);
 
+        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listCategoria, cbxCategoria);
+        bindingGroup.addBinding(jComboBoxBinding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblProduto, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.categoria}"), cbxCategoria, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        lblNome1.setText("Categoria");
+
+        lblNome3.setText("Fornecedor");
+
+        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listFornecedor, cbxFornecedor);
+        bindingGroup.addBinding(jComboBoxBinding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblProduto, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fornecedor}"), cbxFornecedor, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblProduto, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.qtdEstoque}"), txtQtdEstoque, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        jScrollPane5.setViewportView(txtQtdEstoque);
+
         javax.swing.GroupLayout abaDadosLayout = new javax.swing.GroupLayout(abaDados);
         abaDados.setLayout(abaDadosLayout);
         abaDadosLayout.setHorizontalGroup(
@@ -288,62 +320,81 @@ public class FormProduto extends javax.swing.JDialog {
             .addGroup(abaDadosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(abaDadosLayout.createSequentialGroup()
                         .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblCodigo)
-                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(abaDadosLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
-                                .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, abaDadosLayout.createSequentialGroup()
-                                        .addGap(1, 1, 1)
+                                .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, abaDadosLayout.createSequentialGroup()
                                         .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblMarca)
-                                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(18, 18, 18)
+                                            .addComponent(lblNome)
+                                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblCategoria)
-                                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, abaDadosLayout.createSequentialGroup()
+                                            .addGroup(abaDadosLayout.createSequentialGroup()
+                                                .addGap(37, 37, 37)
+                                                .addComponent(lblValor))
+                                            .addGroup(abaDadosLayout.createSequentialGroup()
+                                                .addGap(35, 35, 35)
+                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, abaDadosLayout.createSequentialGroup()
                                         .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(lblNome))
-                                        .addGap(18, 18, 18)
+                                            .addComponent(cbxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(lblNome1))
+                                        .addGap(35, 35, 35)
                                         .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblValor)
-                                            .addComponent(jScrollPane5))))))
-                        .addGap(113, 113, 113)))
-                .addContainerGap())
+                                            .addComponent(lblNome3)
+                                            .addComponent(cbxFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(0, 63, Short.MAX_VALUE))
+                            .addGroup(abaDadosLayout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblCodigo)
+                                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, abaDadosLayout.createSequentialGroup()
+                        .addGap(0, 259, Short.MAX_VALUE)
+                        .addComponent(lblCategoria)
+                        .addGap(217, 217, 217))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, abaDadosLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(182, 182, 182))
         );
         abaDadosLayout.setVerticalGroup(
             abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(abaDadosLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
+                .addGap(44, 44, 44)
                 .addComponent(lblCodigo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
+                .addGap(10, 10, 10)
                 .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNome)
                     .addComponent(lblValor))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(lblCategoria)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(abaDadosLayout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(abaDadosLayout.createSequentialGroup()
-                                .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lblMarca)
-                                    .addComponent(lblCategoria))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(147, Short.MAX_VALUE))
+                        .addComponent(lblNome1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cbxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbxFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(abaDadosLayout.createSequentialGroup()
+                        .addComponent(lblNome3)
+                        .addGap(31, 31, 31)))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         pnlAbas.addTab("Dados", abaDados);
@@ -437,11 +488,12 @@ public class FormProduto extends javax.swing.JDialog {
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         // TODO add your handling code here:
         if(validaCampos()) {
-            trataEdicao(false);
+            
             int linhaSelecionada = tblProduto.getSelectedRow(); // pegar linha selecionada
             Produto objProduto  = listProduto.get(linhaSelecionada); // criar referencia para pegar o objeto que foi criado em novo
             objDAOProduto.salvar(objProduto);
             atualizaTabela();
+            trataEdicao(false);
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
@@ -506,27 +558,30 @@ public class FormProduto extends javax.swing.JDialog {
     private javax.swing.JButton btnProximo;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JButton btnUltimo;
+    private javax.swing.JComboBox<String> cbxCategoria;
+    private javax.swing.JComboBox<String> cbxFornecedor;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JLabel lblCategoria;
     private javax.swing.JLabel lblCodigo;
-    private javax.swing.JLabel lblMarca;
     private javax.swing.JLabel lblNome;
+    private javax.swing.JLabel lblNome1;
+    private javax.swing.JLabel lblNome3;
     private javax.swing.JLabel lblValor;
+    private java.util.List<Categoria> listCategoria;
+    private java.util.List<Fornecedor> listFornecedor;
     private java.util.List<Produto> listProduto;
     private javax.swing.JTabbedPane pnlAbas;
     private javax.swing.JPanel pnlNav;
     private javax.swing.JTable tblProduto;
-    private javax.swing.JTextPane txtCategoria;
     private javax.swing.JTextPane txtCodigo;
-    private javax.swing.JTextPane txtMarca;
     private javax.swing.JTextPane txtNome;
-    private javax.swing.JTextPane txtValor;
+    private javax.swing.JTextPane txtPrecoVenda;
+    private javax.swing.JTextPane txtQtdEstoque;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

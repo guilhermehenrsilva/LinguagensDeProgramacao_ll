@@ -34,15 +34,30 @@ public class FormFornecedor extends javax.swing.JDialog {
     
     public boolean validaCampos(){
         
-        if(!(txtTipo.getText().length() > 0)){
-            JOptionPane.showMessageDialog(null, "Informe o produto do fornecedor");
+        if(!(txtNomeFornecedor.getText().length() > 0)){
+            JOptionPane.showMessageDialog(null, "Informe o Nome do fornecedor");
             return false;
         }
-        else if(!(txtValor.getText().length() > 0)){
-            JOptionPane.showMessageDialog(null, "Informe o Valor do Lote");
+        else if(!(txtCnpj.getText().length() > 0)){
+            JOptionPane.showMessageDialog(null, "Informe o CNPJ do Fornecedor");
             return false;
         }
-        
+        else if(!(txtTelefoneFornecedor.getText().length() > 0)){
+            JOptionPane.showMessageDialog(null, "Informe telefone do Fornecedor");
+            return false;
+        }
+        else if(!(txtEmailFornecedor.getText().length() > 0)){
+            JOptionPane.showMessageDialog(null, "Informe E-mail do Fornecedor");
+            return false;
+        }
+        else if(!(txtCidade.getText().length() > 0)){
+            JOptionPane.showMessageDialog(null, "Informe cidade do Fornecedor");
+            return false;
+        }
+        else if(!(txtUF.getText().length() > 0)){
+            JOptionPane.showMessageDialog(null, "Informe UF da cidade do Fornecedor");
+            return false;
+        }
         return true;
     }
     
@@ -55,7 +70,7 @@ public class FormFornecedor extends javax.swing.JDialog {
             btnEditar.setEnabled(false);
             btnExcluir.setEnabled(false);
             txtCodigo.setText("");
-            txtTipo.setText("");
+            txtNomeFornecedor.setText("");
         } else {
           btnExcluir.setEnabled(!editando);
         }
@@ -65,9 +80,13 @@ public class FormFornecedor extends javax.swing.JDialog {
         btnAnterior.setEnabled(!editando);
         btnProximo.setEnabled(!editando);
         btnUltimo.setEnabled(!editando);
-      
-        txtTipo.setEnabled(editando);
-        txtValor.setEnabled(editando);
+        
+        txtNomeFornecedor.setEnabled(editando);
+        txtCnpj.setEnabled(editando);
+        txtTelefoneFornecedor.setEnabled(editando);
+        txtEmailFornecedor.setEnabled(editando);
+        txtCidade.setEnabled(editando);
+        txtUF.setEnabled(editando);
           
     }
     /**
@@ -100,14 +119,26 @@ public class FormFornecedor extends javax.swing.JDialog {
         btnSalvar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         lblCodigo = new javax.swing.JLabel();
-        lblTipo = new javax.swing.JLabel();
         lblValor = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        txtTipo = new javax.swing.JTextPane();
         jScrollPane5 = new javax.swing.JScrollPane();
-        txtValor = new javax.swing.JTextPane();
+        txtEmailFornecedor = new javax.swing.JTextPane();
         jScrollPane6 = new javax.swing.JScrollPane();
         txtCodigo = new javax.swing.JTextPane();
+        lblNomeCliente = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        txtNomeFornecedor = new javax.swing.JTextPane();
+        lblCpf = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtCnpj = new javax.swing.JTextPane();
+        lblTelefone = new javax.swing.JLabel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        txtTelefoneFornecedor = new javax.swing.JTextPane();
+        lblEmail = new javax.swing.JLabel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        txtCidade = new javax.swing.JTextPane();
+        lblValor1 = new javax.swing.JLabel();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        txtUF = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro Fornecedor");
@@ -159,17 +190,26 @@ public class FormFornecedor extends javax.swing.JDialog {
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listFornecedor, tblFornecedor);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codFornecedor}"));
-        columnBinding.setColumnName("Código");
+        columnBinding.setColumnName("Cod Fornecedor");
         columnBinding.setColumnClass(Integer.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tipo}"));
-        columnBinding.setColumnName("Produto");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cnpj}"));
+        columnBinding.setColumnName("Cnpj");
         columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${valor}"));
-        columnBinding.setColumnName("Valor");
-        columnBinding.setColumnClass(Double.class);
-        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${email}"));
+        columnBinding.setColumnName("Email");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nomeFornecedor}"));
+        columnBinding.setColumnName("Nome Fornecedor");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${telefoneFornecedor}"));
+        columnBinding.setColumnName("Telefone Fornecedor");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cidadeFornecedor}"));
+        columnBinding.setColumnName("Cidade Fornecedor");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${uf}"));
+        columnBinding.setColumnName("Uf");
+        columnBinding.setColumnClass(String.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane1.setViewportView(tblFornecedor);
@@ -223,26 +263,54 @@ public class FormFornecedor extends javax.swing.JDialog {
 
         lblCodigo.setText("Código");
 
-        lblTipo.setText("Produto");
+        lblValor.setText("E-mail");
 
-        lblValor.setText("Valor");
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblFornecedor, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.nome}"), txtTipo, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblFornecedor, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.email}"), txtEmailFornecedor, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        jScrollPane3.setViewportView(txtTipo);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblFornecedor, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.valor}"), txtValor, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        bindingGroup.addBinding(binding);
-
-        jScrollPane5.setViewportView(txtValor);
+        jScrollPane5.setViewportView(txtEmailFornecedor);
 
         txtCodigo.setEditable(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblFornecedor, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.codPlano}"), txtCodigo, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblFornecedor, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.codFornecedor}"), txtCodigo, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         jScrollPane6.setViewportView(txtCodigo);
+
+        lblNomeCliente.setText("Nome");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblFornecedor, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.nomeFornecedor}"), txtNomeFornecedor, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        jScrollPane4.setViewportView(txtNomeFornecedor);
+
+        lblCpf.setText("CNPJ");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblFornecedor, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.cnpj}"), txtCnpj, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        jScrollPane2.setViewportView(txtCnpj);
+
+        lblTelefone.setText("Telefone");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblFornecedor, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.telefoneFornecedor}"), txtTelefoneFornecedor, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        jScrollPane7.setViewportView(txtTelefoneFornecedor);
+
+        lblEmail.setText("Cidade");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblFornecedor, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.cidadeFornecedor}"), txtCidade, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        jScrollPane8.setViewportView(txtCidade);
+
+        lblValor1.setText("UF");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblFornecedor, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.uf}"), txtUF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        jScrollPane9.setViewportView(txtUF);
 
         javax.swing.GroupLayout abaDadosLayout = new javax.swing.GroupLayout(abaDados);
         abaDados.setLayout(abaDadosLayout);
@@ -256,16 +324,38 @@ public class FormFornecedor extends javax.swing.JDialog {
                     .addGroup(abaDadosLayout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblCodigo))
-                        .addGap(69, 69, 69)
-                        .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblTipo))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblValor)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(lblCodigo)
+                            .addGroup(abaDadosLayout.createSequentialGroup()
+                                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(53, 53, 53)
+                                .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblTelefone)
+                                    .addGroup(abaDadosLayout.createSequentialGroup()
+                                        .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(lblEmail))
+                                        .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(abaDadosLayout.createSequentialGroup()
+                                                .addGap(18, 18, 18)
+                                                .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(lblCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(lblValor)))
+                                            .addGroup(abaDadosLayout.createSequentialGroup()
+                                                .addGap(18, 18, 18)
+                                                .addComponent(lblValor1))))
+                                    .addComponent(lblNomeCliente)
+                                    .addGroup(abaDadosLayout.createSequentialGroup()
+                                        .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jScrollPane5)
+                                            .addGroup(abaDadosLayout.createSequentialGroup()
+                                                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(0, 0, Short.MAX_VALUE)))))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         abaDadosLayout.setVerticalGroup(
@@ -274,16 +364,39 @@ public class FormFornecedor extends javax.swing.JDialog {
                 .addGap(19, 19, 19)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(64, 64, 64)
-                .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTipo)
-                    .addComponent(lblValor)
-                    .addComponent(lblCodigo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(233, Short.MAX_VALUE))
+                .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(abaDadosLayout.createSequentialGroup()
+                        .addComponent(lblCodigo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(abaDadosLayout.createSequentialGroup()
+                                .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblNomeCliente)
+                                    .addComponent(lblCpf))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(abaDadosLayout.createSequentialGroup()
+                                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblTelefone))
+                                    .addGroup(abaDadosLayout.createSequentialGroup()
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblValor)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(abaDadosLayout.createSequentialGroup()
+                                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addGroup(abaDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(lblValor1)
+                                            .addComponent(lblEmail))))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(81, Short.MAX_VALUE))
         );
 
         pnlAbas.addTab("Dados", abaDados);
@@ -354,7 +467,17 @@ public class FormFornecedor extends javax.swing.JDialog {
     }//GEN-LAST:event_btnUltimoActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        // TODO add your handling code here:
+       int opcao = JOptionPane.showOptionDialog(null, "Confirma Exclusão?",
+                "Pergunta", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                null, new String[]{"Sim", "Não"}, "Sim");
+
+        if (opcao == 0) {
+            int linhaSelecionada = tblFornecedor.getSelectedRow();
+            Fornecedor obj = listFornecedor.get(linhaSelecionada);
+            objDAOFornecedor.remover(obj);
+            atualizaTabela();
+            trataEdicao(false);
+        } // TODO add your handling code here:
 
     }//GEN-LAST:event_btnExcluirActionPerformed
 
@@ -378,7 +501,7 @@ public class FormFornecedor extends javax.swing.JDialog {
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
         trataEdicao(true);
-        txtTipo.requestFocus();
+        txtCodigo.requestFocus();
         
     }//GEN-LAST:event_btnEditarActionPerformed
 
@@ -388,7 +511,7 @@ public class FormFornecedor extends javax.swing.JDialog {
         listFornecedor.add((Fornecedor) new Fornecedor()); // cria um objeto e uma linha na tabela
         int linha = listFornecedor.size()-1;
         tblFornecedor.setRowSelectionInterval(linha, linha); // seleciona a linha
-        txtTipo.requestFocus(); // caixa de texto nome recebe o foco
+        txtCodigo.requestFocus(); // caixa de texto nome recebe o foco
     }//GEN-LAST:event_btnNovoActionPerformed
 
     /**
@@ -455,19 +578,31 @@ public class FormFornecedor extends javax.swing.JDialog {
     private javax.swing.JButton btnUltimo;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JLabel lblCodigo;
-    private javax.swing.JLabel lblTipo;
+    private javax.swing.JLabel lblCpf;
+    private javax.swing.JLabel lblEmail;
+    private javax.swing.JLabel lblNomeCliente;
+    private javax.swing.JLabel lblTelefone;
     private javax.swing.JLabel lblValor;
+    private javax.swing.JLabel lblValor1;
     private java.util.List<modelo.Fornecedor> listFornecedor;
     private javax.swing.JTabbedPane pnlAbas;
     private javax.swing.JPanel pnlNav;
     private javax.swing.JTable tblFornecedor;
+    private javax.swing.JTextPane txtCidade;
+    private javax.swing.JTextPane txtCnpj;
     private javax.swing.JTextPane txtCodigo;
-    private javax.swing.JTextPane txtTipo;
-    private javax.swing.JTextPane txtValor;
+    private javax.swing.JTextPane txtEmailFornecedor;
+    private javax.swing.JTextPane txtNomeFornecedor;
+    private javax.swing.JTextPane txtTelefoneFornecedor;
+    private javax.swing.JTextPane txtUF;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

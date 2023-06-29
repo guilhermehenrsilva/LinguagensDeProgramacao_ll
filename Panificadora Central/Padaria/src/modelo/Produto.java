@@ -5,45 +5,30 @@ import java.util.Objects;
 
 public class Produto implements Serializable {
     
-    private String nome;
-    private String categoria;
-    private String marca;
-    private double valor;
     private Integer codProduto;
+    private String nomeProduto;
+    private Double precoVenda;
+    private Fornecedor fornecedor;
+    private Double qtdEstoque;
+    private Categoria categoria;
 
-    public Produto() {
+    public Fornecedor getFornecedor() {
+        return fornecedor;
     }
 
-    public String getNome() {
-        return nome;
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCategoria() {
+    public Categoria getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(String categoria) {
+    public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
-    }
+    }    
 
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-
-    public double getValor() {
-        return valor;
-    }
-
-    public void setValor(double valor) {
-        this.valor = valor;
+    public Produto() {
     }
 
     public Integer getCodProduto() {
@@ -53,7 +38,34 @@ public class Produto implements Serializable {
     public void setCodProduto(Integer codProduto) {
         this.codProduto = codProduto;
     }
-    
+
+    public String getNomeProduto() {
+        return nomeProduto;
+    }
+
+    public Double getQtdEstoque() {
+        return qtdEstoque;
+    }
+
+    public void setQtdEstoque(Double qtdEstoque) {
+        this.qtdEstoque = qtdEstoque;
+    }
+
+    public void setNomeProduto(String nomeProduto) {
+        this.nomeProduto = nomeProduto;
+    }
+
+    public Double getPrecoVenda() {
+        return precoVenda;
+    }
+
+    public void setPrecoVenda(Double precoVenda) {
+        this.precoVenda = precoVenda;
+    }
+
+   
+
+   
     @Override
     public int hashCode() {
         int hash = 7;
