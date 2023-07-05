@@ -2,85 +2,79 @@ package modelo;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class Venda implements Serializable{
+
+    private Integer codVendaG;
+    private Calendar datahoraVenda;
+    private String tipoVenda;
+    private Clientes clientes = new Clientes();
+ 
+    public Venda(){
     
-    private String formaPagamento;
-    private Integer qntd;
-    private Integer desconto;
-    private Integer codVenda;
-    private Calendar dataVenda;
-    private Clientes cli;
-    private Produto prod;
-    private Fornecedor plan;
-    
-    public Venda() {
     }
 
-    public String getFormaPagamento() {
-        return formaPagamento;
+    public Integer getCodVendaG() {
+        return codVendaG;
     }
 
-    public void setFormaPagamento(String formaPagamento) {
-        this.formaPagamento = formaPagamento;
+    public void setCodVendaG(Integer codVendaG) {
+        this.codVendaG = codVendaG;
     }
 
-    public Integer getQntd() {
-        return qntd;
+    public Calendar getDatahoraVenda() {
+        return datahoraVenda;
     }
 
-    public void setQntd(Integer qntd) {
-        this.qntd = qntd;
+    public void setDatahoraVenda(Calendar datahoraVenda) {
+        this.datahoraVenda = datahoraVenda;
     }
 
-    public Integer getDesconto() {
-        return desconto;
+    public String getTipoVenda() {
+        return tipoVenda;
     }
 
-    public void setDesconto(Integer desconto) {
-        this.desconto = desconto;
+    public void setTipoVenda(String tipoVenda) {
+        this.tipoVenda = tipoVenda;
     }
 
-    public Integer getCodVenda() {
-        return codVenda;
+    public Clientes getClientes() {
+        return clientes;
     }
 
-    public void setCodVenda(Integer codVenda) {
-        this.codVenda = codVenda;
-    }
-    
-    public Calendar getDataVenda() {
-        return dataVenda;
+    public void setClientes(Clientes clientes) {
+        this.clientes = clientes;
     }
 
-    public void setDataVenda(Calendar dataVenda) {
-        this.dataVenda = dataVenda;
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
     }
 
-    public Clientes getCli() {
-        return cli;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Venda other = (Venda) obj;
+        if (!Objects.equals(this.codVendaG, other.codVendaG)) {
+            return false;
+        }
+        return true;
     }
 
-    public void setCli(Clientes cli) {
-        this.cli = cli;
+    @Override
+    public String toString() {
+        return "Venda{" + "datahoraVenda=" + datahoraVenda + '}';
     }
-
-    public Produto getProd() {
-        return prod;
-    }
-
-    public void setProd(Produto prod) {
-        this.prod = prod;
-    }
-
-    public Fornecedor getPlan() {
-        return plan;
-    }
-
-    public void setPlan(Fornecedor plan) {
-        this.plan = plan;
-    }
-    
     
     
 }

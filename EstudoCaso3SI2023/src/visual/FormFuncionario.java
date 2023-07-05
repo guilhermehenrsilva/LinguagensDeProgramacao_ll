@@ -5,8 +5,11 @@
  */
 package visual;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import modelo.Cidade;
 import modelo.DAOCidade;
@@ -447,7 +450,11 @@ public class FormFuncionario extends javax.swing.JDialog {
             trataEdicao(false);
             int linhaSelecionada = tblFuncionario.getSelectedRow();
             Funcionario objFuncionario = listFuncionario.get(linhaSelecionada);
-            objDAOFuncionario.salvar(objFuncionario);
+            try {
+                objDAOFuncionario.salvar(objFuncionario);
+            } catch (SQLException ex) {
+                Logger.getLogger(FormFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+            }
             atualizaTabela();
         }
 

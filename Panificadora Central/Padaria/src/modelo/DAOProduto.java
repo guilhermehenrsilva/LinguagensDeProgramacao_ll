@@ -12,7 +12,7 @@ public class DAOProduto {
  DAOFornecedor daoFornecedor = new DAOFornecedor();
  DAOCategoria daoCategoria = new DAOCategoria();
  
-    public List<Produto> getLista() {
+    public List<Produto> getListaProduto() {
         String sql = "select * from produtos";
         List<Produto> lista = new ArrayList<>();
         try {
@@ -24,7 +24,7 @@ public class DAOProduto {
                 obj.setNomeProduto(rs.getString("nomeProduto"));
                 obj.setPrecoVenda(rs.getDouble("precoVenda"));
                 obj.setQtdEstoque(rs.getDouble("qtdEstoque"));               
-                obj.setFornecedor(daoFornecedor.localizar(rs.getString("FORNECEDORES_cnpj")));
+                obj.setFornecedor(daoFornecedor.localizar(rs.getString("FORNECEDORES_codFornecedor")));
                 obj.setCategoria(daoCategoria.localizar(rs.getInt("CATEGORIA_codCategoria")));
                 lista.add(obj);
             }
@@ -35,7 +35,7 @@ public class DAOProduto {
     }
     
      public boolean incluir(Produto obj) {
-        String sql = "insert into produtos(nomeProduto,precoVenda,qtdEstoque,FORNECEDORES_cnpj,CATEGORIA_codCategoria) values(?,?,?,?,?)";
+        String sql = "insert into produtos(nomeProduto,precoVenda,qtdEstoque,FORNECEDORES_codFornecedor,CATEGORIA_codCategoria) values(?,?,?,?,?)";
         try {
             PreparedStatement pst = Conexao.getPreparedStatement(sql);
             pst.setString(1, obj.getNomeProduto());
@@ -59,7 +59,7 @@ public class DAOProduto {
     }
      
      public boolean alterar(Produto obj) {
-        String sql = "update produtos set nomeProduto=?,precoVenda=?,qtdEstoque=?,FORNECEDORES_cnpj=?,CATEGORIA_codCategoria=?  where codProduto=?";
+        String sql = "update produtos set nomeProduto=?,precoVenda=?,qtdEstoque=?,FORNECEDORES_codFornecedor=?,CATEGORIA_codCategoria=?  where codProduto=?";
         try {
             PreparedStatement pst = Conexao.getPreparedStatement(sql);
             pst.setString(1, obj.getNomeProduto());
@@ -113,5 +113,26 @@ public class DAOProduto {
         return false;
     }
      
-   
+    public Produto localizarProduto(Integer id) {
+        String sql = "select * from produtos where codigo = ?";
+        Produto obj = new Produto();
+        try {
+            PreparedStatement pst = Conexao.getPreparedStatement(sql);
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                obj.setCodProduto(rs.getInt("codProduto"));
+                obj.setNomeProduto(rs.getString("nomeProduto"));
+                obj.setPrecoVenda(rs.getDouble("precoVenda"));
+                obj.setQtdEstoque(rs.getDouble("qtdEstoque"));               
+                obj.setFornecedor(daoFornecedor.localizar(rs.getString("FORNECEDORES_codFornecedor")));
+                obj.setCategoria(daoCategoria.localizar(rs.getInt("CATEGORIA_codCategoria")));
+                return obj;
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro de SQL no localizarProduto" + e.getMessage());
+
+        }
+        return null;
+    }
 }

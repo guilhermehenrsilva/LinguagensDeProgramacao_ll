@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 
 public class DAOCliente {
     
-        public List<Clientes> getLista() {
+        public List<Clientes> getListaClientes() {
         String sql = "select * from clientes";
         List<Clientes> lista = new ArrayList<>();
         try {
@@ -21,12 +21,12 @@ public class DAOCliente {
                 obj.setCodCliente(rs.getInt("codCliente"));
                 obj.setNomeCliente(rs.getString("nomeCliente"));
                 obj.setCpf(rs.getString("cpf"));
-                obj.setEmail(rs.getString("email"));
                 java.sql.Date dt = rs.getDate("dataNascimento");
                 Calendar c = Calendar.getInstance();
                 c.setTime(dt);
                 obj.setDataNascimento(c);
                 obj.setTelefone(rs.getString("telefone"));
+                obj.setEmail(rs.getString("email"));
                 lista.add(obj);
             }
         } catch (SQLException e) {
@@ -49,7 +49,7 @@ public class DAOCliente {
             PreparedStatement pst = Conexao.getPreparedStatement(sql);
             pst.setString(1, obj.getNomeCliente());
             pst.setString(2, obj.getCpf());
-            pst.setDate(3, new java.sql.Date(obj.getDataNascimento().getTimeInMillis()));
+            pst.setDate  (3, new java.sql.Date(obj.getDataNascimento().getTimeInMillis()));
             pst.setString(4, obj.getTelefone());
             pst.setString(5, obj.getEmail());
           

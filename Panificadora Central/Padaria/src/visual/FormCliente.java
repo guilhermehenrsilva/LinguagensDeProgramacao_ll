@@ -5,6 +5,7 @@
  */
 package visual;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -25,7 +26,7 @@ public class FormCliente extends javax.swing.JDialog {
     }
     public void atualizaTabela(){
         listCliente.clear();
-        listCliente.addAll(objDAOCliente.getLista());
+        listCliente.addAll(objDAOCliente.getListaClientes());
         int linha = listCliente.size()-1;
         if(linha >= 0){
             tblCliente.setRowSelectionInterval(linha, linha);
@@ -36,18 +37,14 @@ public class FormCliente extends javax.swing.JDialog {
     public boolean validaCampos(){
         
         if(!(txtNomeCliente.getText().length() > 0)){
-            JOptionPane.showMessageDialog(null, "Nome do Cliente");
+            JOptionPane.showMessageDialog(null, "Informe o Nome do Cliente");
             return false;
         }
-        else if(!(txtCpf.getText().length() > 0)){
-            JOptionPane.showMessageDialog(null, "CPF do Cliente");
+        if(!(txtCpf.getText().length() > 0)){
+            JOptionPane.showMessageDialog(null, "Informe o CPF do Cliente");
             return false;
         }
-        else if(!(txtEmail.getText().length() > 0)){
-            JOptionPane.showMessageDialog(null, "E-mail do Cliente");
-            return false;
-        }
-        else if ((txtNascimento.getText().length() > 0)) {
+        if ((txtNascimento.getText().length() > 0)) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             sdf.setLenient(false);
             try {
@@ -59,12 +56,16 @@ public class FormCliente extends javax.swing.JDialog {
             }
 
         }
-        else if(!(txtTelefone.getText().length() > 0)){
-            JOptionPane.showMessageDialog(null, "Telefone do Cliente");
+        if(!(txtTelefone.getText().length() > 0)){
+            JOptionPane.showMessageDialog(null, "Informe o Telefone do Cliente");
             return false;
         }
-    
-        return true;
+        if(!(txtEmail.getText().length() > 0)){
+            JOptionPane.showMessageDialog(null, "Informe o E-mail do Cliente");
+            return false;
+        }
+        
+    return true;
     }
     
     private void trataEdicao(boolean editando){
@@ -91,8 +92,9 @@ public class FormCliente extends javax.swing.JDialog {
         txtNomeCliente.setEnabled(editando);
         txtCpf.setEnabled(editando);
         txtNascimento.setEnabled(editando);
+        txtTelefone.setEnabled(editando); 
         txtEmail.setEnabled(editando);
-        txtTelefone.setEnabled(editando);  
+         
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -470,13 +472,14 @@ public class FormCliente extends javax.swing.JDialog {
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         
         if(validaCampos()) {
+            trataEdicao(false);
             int linhaSelecionada = tblCliente.getSelectedRow(); // pegar linha selecionada
             Clientes objCliente  = listCliente.get(linhaSelecionada); // criar referencia para pegar o objeto que foi criado em novo
             objDAOCliente.salvar(objCliente);
             atualizaTabela();
-            trataEdicao(false);
            
-        }
+    }
+        
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed

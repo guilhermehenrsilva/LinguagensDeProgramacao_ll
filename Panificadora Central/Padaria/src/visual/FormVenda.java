@@ -6,21 +6,21 @@
 package visual;
 
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JOptionPane;
-import modelo.Cliente;
+import modelo.Clientes;
 import modelo.ConverteDataWEB;
 import modelo.DAOCliente;
-import modelo.DAOItensVenda;
+import modelo.DAOProdutosVendas;
 import modelo.DAOProduto;
 import modelo.DAOVenda;
 import modelo.Produto;
-import modelo.ItensVenda;
+import modelo.DAOProdutosVendas;
+import modelo.ProdutosVendas;
 import modelo.Venda;
 
 /**
  *
- * @author tulio
+ * @author Guilherme
  */
 public class FormVenda extends javax.swing.JDialog {
 
@@ -28,8 +28,8 @@ public class FormVenda extends javax.swing.JDialog {
     DAOCliente daoCliente = new DAOCliente();
     DAOVenda daoVenda = new DAOVenda();
     Venda objVenda = new Venda();
-    ItensVenda objItensVenda = new ItensVenda();
-    DAOItensVenda daoItensVenda = new DAOItensVenda();
+    ProdutosVendas objProdutosVendas = new ProdutosVendas();
+    DAOProdutosVendas daoProdutosVendas = new DAOProdutosVendas();
     ConverteDataWEB data = new ConverteDataWEB();
     String dataAtual = data.dataAtual();
     int ultimoIDVenda = 0;
@@ -44,8 +44,8 @@ public class FormVenda extends javax.swing.JDialog {
         listProduto.clear();
         listProduto.addAll(daoProduto.getListaProduto());
 
-        listCliente.clear();
-        listCliente.addAll(daoCliente.getListaCliente());
+        listClientes.clear();
+        listClientes.addAll(daoCliente.getListaClientes());
 
         trataEdicao(false);
     }
@@ -70,9 +70,9 @@ public class FormVenda extends javax.swing.JDialog {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        listCliente = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList <Cliente>());
         listProduto = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList <Produto>());
-        listItensVenda = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList <ItensVenda>());
+        listItensVenda = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList <ProdutosVendas>());
+        listClientes = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList <Clientes>());
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -99,10 +99,8 @@ public class FormVenda extends javax.swing.JDialog {
 
         jLabel2.setText("CLIENTE:");
 
-        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listCliente, cbxCliente);
+        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listClientes, cbxCliente);
         bindingGroup.addBinding(jComboBoxBinding);
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listCliente, org.jdesktop.beansbinding.ObjectProperty.create(), cbxCliente, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
 
         cbxCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -111,6 +109,7 @@ public class FormVenda extends javax.swing.JDialog {
         });
 
         org.jdesktop.swingbinding.JListBinding jListBinding = org.jdesktop.swingbinding.SwingBindings.createJListBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listProduto, jListProduto);
+        jListBinding.setDetailBinding(org.jdesktop.beansbinding.ELProperty.create("${nomeProduto}"));
         bindingGroup.addBinding(jListBinding);
 
         jScrollPane1.setViewportView(jListProduto);
@@ -212,8 +211,8 @@ public class FormVenda extends javax.swing.JDialog {
                         .addGap(118, 118, 118)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnRemove)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 457, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(161, 161, 161))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(258, 258, 258))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -291,10 +290,10 @@ public class FormVenda extends javax.swing.JDialog {
         trataEdicao(false);
 
         listItensVenda.clear();
-        listItensVenda.addAll(daoItensVenda.getListaItensVenda(0));
+        listItensVenda.addAll(daoProdutosVendas.getListaProdutosVendas(0));
 
         ultimoIDVenda = daoVenda.getLastId();
-        objVenda.setIdVenda(ultimoIDVenda);
+        objVenda.setCodVendaG(ultimoIDVenda);
         daoVenda.removeVenda(objVenda);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
@@ -304,15 +303,15 @@ public class FormVenda extends javax.swing.JDialog {
         trataEdicao(true);
 
         int linhaSelecionada = cbxCliente.getSelectedIndex();
-        Cliente objCliente = listCliente.get(linhaSelecionada);
-        objVenda.setCliente(objCliente);
-        objVenda.setDataVenda(data.converteCalendario(dataAtual));
+        Clientes objCliente = (Clientes) listClientes.get(linhaSelecionada);
+        objVenda.setClientes(objCliente);
+      //  objVenda.getDatahoraVenda(data.converteBanco(dataAtual));
 
         daoVenda.incluir(objVenda);
         ultimoIDVenda = daoVenda.getLastId();
-        objVenda.setIdVenda(ultimoIDVenda);
+        objVenda.setCodVendaG(ultimoIDVenda);
         // atualizaTela();
-        // trataEdicao(false);
+         trataEdicao(false);
 
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
@@ -325,16 +324,16 @@ public class FormVenda extends javax.swing.JDialog {
         } else {
             int linhaSelecionada = jListProduto.getSelectedIndex();
             Produto objProduto = listProduto.get(linhaSelecionada);
-            objItensVenda.setObjProduto(objProduto);
-            objItensVenda.setQuantidadeProduto(Integer.parseInt(txtQuantidade.getText()));
-            // System.out.println("id venda ultimo: "+ultimoIDVenda);
-            objVenda.setIdVenda(ultimoIDVenda);
-            objItensVenda.setObjProduto(objProduto);
-            objItensVenda.setObjVenda(objVenda);
-            daoItensVenda.incluir(objItensVenda);
+            objProdutosVendas.setCodProduto(objProduto);
+            objProdutosVendas.setQtdProduto(Integer.parseInt(txtQuantidade.getText()));
+            System.out.println("id venda ultimo: "+ultimoIDVenda);
+            objVenda.setCodVendaG(ultimoIDVenda);
+            objProdutosVendas.setCodProduto(objProduto);
+            objProdutosVendas.setCodvenda(objVenda);
+            daoVenda.incluir(objVenda);
 
             listItensVenda.clear();
-            listItensVenda.addAll(daoItensVenda.getListaItensVenda(ultimoIDVenda));
+            listItensVenda.addAll(daoProdutosVendas.getListaProdutosVendas(ultimoIDVenda));
         }
     }//GEN-LAST:event_btnVenderActionPerformed
 
@@ -346,7 +345,7 @@ public class FormVenda extends javax.swing.JDialog {
 
             trataEdicao(false);
             listItensVenda.clear();
-            listItensVenda.addAll(daoItensVenda.getListaItensVenda(0));
+            listItensVenda.addAll(daoProdutosVendas.getListaProdutosVendas(0));
 
      //   }
 
@@ -360,11 +359,11 @@ public class FormVenda extends javax.swing.JDialog {
 
         } else {
             int linhaSelecionada = jListProdutoVendido.getSelectedIndex();
-            objItensVenda = listItensVenda.get(linhaSelecionada);
-            objItensVenda.setIdItensVenda(objItensVenda.getIdItensVenda());
-            daoItensVenda.remover(objItensVenda);
+            objProdutosVendas = listItensVenda.get(linhaSelecionada);
+            objProdutosVendas.setCodProduto(objProdutosVendas.getCodProduto());
+            //daoProdutosVendas.remover(objProdutosVendas);
             listItensVenda.clear();
-            listItensVenda.addAll(daoItensVenda.getListaItensVenda(ultimoIDVenda));
+            listItensVenda.addAll(daoProdutosVendas.getListaProdutosVendas(ultimoIDVenda));
         }
     }//GEN-LAST:event_btnRemoveActionPerformed
 
@@ -397,6 +396,7 @@ public class FormVenda extends javax.swing.JDialog {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(FormVenda.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
@@ -432,8 +432,8 @@ public class FormVenda extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private java.util.List<Cliente> listCliente;
-    private java.util.List<ItensVenda> listItensVenda;
+    private java.util.List<Clientes> listClientes;
+    private java.util.List<ProdutosVendas> listItensVenda;
     private java.util.List<Produto> listProduto;
     private javax.swing.JTextField txtData;
     private javax.swing.JTextField txtQuantidade;

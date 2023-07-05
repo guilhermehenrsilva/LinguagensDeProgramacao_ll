@@ -21,6 +21,7 @@ public class FormPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
         menuBarra = new javax.swing.JMenuBar();
         menuCadastro = new javax.swing.JMenu();
         menuCliente = new javax.swing.JMenuItem();
@@ -35,6 +36,8 @@ public class FormPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PANIFICADORA CENTRAL");
         setResizable(false);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\guilh\\Desktop\\verify.png")); // NOI18N
 
         menuBarra.setBorder(null);
         menuBarra.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -108,11 +111,17 @@ public class FormPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 519, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 593, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 369, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 495, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -165,7 +174,13 @@ public class FormPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_menuClienteActionPerformed
 
     private void menuVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuVendaActionPerformed
-        // TODO add your handling code here:
+    // TODO add your handling code here:
+        FormVenda form = new FormVenda(this,true);
+        //true: Define como janela modal: Sobrepõe o FormPrincipal e não deixa acessa-lo
+        //form.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        form.setLocationRelativeTo(null);
+        form.setResizable(false);
+        form.setVisible(true);        // TODO add your handling code here:
     }//GEN-LAST:event_menuVendaActionPerformed
 
     /**
@@ -205,6 +220,7 @@ public class FormPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu menuAjuda;
     private javax.swing.JMenuBar menuBarra;
     private javax.swing.JMenu menuCadastro;

@@ -33,7 +33,7 @@ public class FormProduto extends javax.swing.JDialog {
     }
     public void atualizaTabela(){
         listProduto.clear();
-        listProduto.addAll(objDAOProduto.getLista());
+        listProduto.addAll(objDAOProduto.getListaProduto());
         
         int linha = listProduto.size()-1;
         if(linha >= 0){
@@ -498,7 +498,18 @@ public class FormProduto extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        // TODO add your handling code here:
+        int opcao = JOptionPane.showOptionDialog(null, "Confirma Exclusão?",
+                "Pergunta", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                null, new String[]{"Sim", "Não"}, "Sim");
+
+        if (opcao == 0) {
+            int linhaSelecionada = tblProduto.getSelectedRow();
+            Produto obj = listProduto.get(linhaSelecionada);
+            objDAOProduto.remover(obj);
+            atualizaTabela();
+            trataEdicao(false);
+        }
+                // TODO add your handling code here:
         
     }//GEN-LAST:event_btnExcluirActionPerformed
 

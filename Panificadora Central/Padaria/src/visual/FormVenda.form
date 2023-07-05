@@ -2,12 +2,6 @@
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <NonVisualComponents>
-    <Component class="java.util.List" name="listCliente">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList &lt;Cliente&gt;())"/>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Cliente&gt;"/>
-      </AuxValues>
-    </Component>
     <Component class="java.util.List" name="listProduto">
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList &lt;Produto&gt;())"/>
@@ -16,8 +10,14 @@
     </Component>
     <Component class="java.util.List" name="listItensVenda">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList &lt;ItensVenda&gt;())"/>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;ItensVenda&gt;"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList &lt;ProdutosVendas&gt;())"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;ProdutosVendas&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="java.util.List" name="listClientes">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList &lt;Clientes&gt;())"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Clientes&gt;"/>
       </AuxValues>
     </Component>
   </NonVisualComponents>
@@ -106,9 +106,9 @@
                           <EmptySpace min="-2" pref="118" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="btnRemove" min="-2" max="-2" attributes="0"/>
-                              <Component id="jScrollPane2" min="-2" pref="457" max="-2" attributes="0"/>
+                              <Component id="jScrollPane2" min="-2" pref="360" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="161" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="258" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
@@ -186,8 +186,7 @@
         </Component>
         <Component class="javax.swing.JComboBox" name="cbxCliente">
           <BindingProperties>
-            <BindingProperty name="elements" source="listCliente" target="cbxCliente" targetPath="elements" updateStrategy="0" immediately="false"/>
-            <BindingProperty name="selectedItem" source="listCliente" target="cbxCliente" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+            <BindingProperty name="elements" source="listClientes" target="cbxCliente" targetPath="elements" updateStrategy="0" immediately="false"/>
           </BindingProperties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxClienteActionPerformed"/>
@@ -205,7 +204,9 @@
           <SubComponents>
             <Component class="javax.swing.JList" name="jListProduto">
               <BindingProperties>
-                <BindingProperty name="elements" source="listProduto" target="jListProduto" targetPath="elements" updateStrategy="0" immediately="false"/>
+                <BindingProperty name="elements" source="listProduto" target="jListProduto" targetPath="elements" updateStrategy="0" immediately="false">
+                  <BindingParameter name="DISPLAY" value="${nomeProduto}"/>
+                </BindingProperty>
               </BindingProperties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
